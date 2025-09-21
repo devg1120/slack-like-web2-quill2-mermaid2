@@ -28,7 +28,7 @@ const messages = ref<Message[]>([
     diagrams: [
        { title : "flow Chart" ,
          code : `flowchart TD
-                  Start --> Stop
+    Start --> Stop
 	 `
        },
        { title : "sequence Diagram" ,

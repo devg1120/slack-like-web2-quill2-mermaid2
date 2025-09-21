@@ -22,6 +22,7 @@ import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
 import EmojiSelect from './EmojiSelect.vue'
 
+import  VueMermaidRender  from './VueMermaidRender.vue';
 
 
 const props = defineProps({
@@ -651,6 +652,19 @@ function getLeft(d) {
     return str;
 }
 
+const config = ref(
+{ 
+  //theme : "dark",
+  theme : "forest",  
+  startOnLoad: true, 
+  flowchart: { useMaxWidth: false, htmlLabels: true }
+ }
+);
+
+function err_mermaid(msg) {
+ console.log("Err Mermaid:", msg );
+}
+
 </script>
 
 <template>
@@ -690,6 +704,9 @@ function getLeft(d) {
                 class="diagram"
               >
 	          <p>DIAGRAM: {{diagram.title}}</p>
+	          <pre>{{diagram.code}}</pre>
+	         <VueMermaidRender :config="config" :content="diagram.code" @err-mermaid="err_mermaid"/>
+
               </div>
             </div>
             <div v-if="message.attachments?.length" class="message-attachments">
