@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, computed, onBeforeUnmount, onMounted, onBeforeUpdate, onUpdated, nextTick, onUnmounted } from 'vue'
 import { defineProps , defineEmits } from 'vue';
+
 
 //import { PaperClipIcon, ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
 import { PaperClipIcon, ArrowDownTrayIcon } from './@heroicons/vue/24/outline'
@@ -24,6 +25,11 @@ import EmojiSelect from './EmojiSelect.vue'
 
 import  VueMermaidRender  from './VueMermaidRender.vue';
 
+let content = ref(`sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+`);
 
 const props = defineProps({
   message: {}
@@ -494,14 +500,14 @@ const downloadAttachment = (attachment: Attachment) => {
   link.click()
   document.body.removeChild(link)
 }
-
+/*
 onMounted(() => {
   const textareas = document.querySelectorAll('textarea')
   textareas.forEach((textarea) => {
     adjustTextareaHeight({ target: textarea } as Event)
   })
 })
-
+*/
 // Helper function to format date
 const formatDate = (date: Date): string => {
   const today = new Date()
@@ -578,6 +584,17 @@ const scrollToBottom = () => {
   }
 }
 
+let set_content = ref(false);
+
+
+
+/*
+onBeforeUpdate(() => {
+     set_content.value = true;
+
+});
+*/
+
 onMounted(() => {
   scrollToBottom()
 
@@ -588,6 +605,13 @@ onMounted(() => {
   onUnmounted(() => {
     window.removeEventListener('resize', scrollToBottom)
   })
+
+  nextTick(() => {
+     set_content.value = true;
+  });
+
+  set_content.value = true;
+
 })
 
 const set_editMode = () => {
@@ -656,7 +680,7 @@ const config = ref(
 { 
   //theme : "dark",
   theme : "forest",  
-  startOnLoad: true, 
+  startOnLoad: false, // true: error
   flowchart: { useMaxWidth: false, htmlLabels: true }
  }
 );
@@ -705,7 +729,11 @@ function err_mermaid(msg) {
               >
 	          <p>DIAGRAM: {{diagram.title}}</p>
 	          <pre>{{diagram.code}}</pre>
-	         <VueMermaidRender :config="config" :content="diagram.code" @err-mermaid="err_mermaid"/>
+                  <div v-if="set_content">
+		  
+	            <VueMermaidRender :config="config" :content="diagram.code" @err-mermaid="err_mermaid"/>
+		    
+                  </div>
 
               </div>
             </div>
