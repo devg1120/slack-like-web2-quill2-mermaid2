@@ -74,6 +74,7 @@ const showEmojiPickerForMessage = ref<string | null>(null)
 const selectedAttachment = ref<MessageAttachment | null>(null)
 const messagesContainer = ref<HTMLElement | null>(null)
 
+const showMermaidEditor = ref(false)
 const rte = ref(null)
 const comment_rte = ref(null)
 
@@ -715,6 +716,7 @@ onMounted(() => {
 
       <div class="editor-actions">
         <button class="emoji-button" @click="showEmojiPicker = !showEmojiPicker">😊</button>
+        <button class="emoji-button" @click="showMermaidEditor = !showMermaidEditor">📊</button>
         <DatePickerBase @insertDate="insertDate" />
         <label class="attachment-button">
           <PaperClipIcon class="icon" />
