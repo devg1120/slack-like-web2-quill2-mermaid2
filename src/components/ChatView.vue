@@ -17,6 +17,7 @@ import EmojiSelect from './EmojiSelect.vue'
 import 'vue3-emoji-picker/css'
 import DatePickerBase from './DatePicker.vue'
 
+import MermaidEditor from  "../../vue-mermaid-render2/src/components/MermaidEditor6.vue"
 
 
 const messages = ref<Message[]>([
@@ -587,7 +588,8 @@ const scrollToBottom = () => {
     const container = messagesContainer.value
     container.scrollTop = container.scrollHeight
   }
-}
+};
+
 
 onMounted(() => {
   scrollToBottom()
@@ -649,6 +651,7 @@ onMounted(() => {
            placeholder="Message #general (Use @ for mentions and # for channels)"
       />
 
+       <MermaidEditor v-if="showMermaidEditor" top="-0px" left="0px"  @selectEmoji="insertEmoji2" />
       <!--
         <textarea
           v-model="newMessage"
